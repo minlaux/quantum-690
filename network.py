@@ -1,10 +1,10 @@
-import random
 import math
 
 
 class QNode:
-    def __init__(self, name, mem_capacity=0):
+    def __init__(self, name, link_length, mem_capacity=0):
         self.name = name
+        self.link_length = link_length # to next node
         self.mem_capacity = mem_capacity
         self.memory = []
 
@@ -21,10 +21,18 @@ class QNetwork():
         self.alpha_st = alpha_st
 
         # fill network with nodes
-        self.nodes = [QNode(name=f"Node_{i}") for i in range(len(link_lengths) + 1)]
+        # station A
+        self.nodes = [QNode(name="A", link_length=link_lengths[0])]
+
+        # satellite repeaters
+        for i in range(1, len(link_lengths) - 1):
+            self.nodes.append(QNode(name="S", link_length=link_lengths[i]))
+
+        # station B
+        self.nodes.append(QNode(name="B", link_length=None))
     
 
-    def get_fidelity(self, k):
+    def get_fidelity(self, k=0.001):
         """
         Calculates total fidelity of the network.
         """
@@ -36,7 +44,7 @@ class QNetwork():
             total_fidelity *= math.exp(-k * length)
 
         return total_fidelity
-
+    
 
     def get_photon_loss(self):
         """
@@ -44,25 +52,24 @@ class QNetwork():
         """
         total_loss = 1.0
 
-        for i in range(len(self.link_lengths)):
-            if (i == 0) or i == (len(self.link_lengths) - 1):
+        for i in range(len(self.nodes) - 1):
+            if (i == 0) or i == (len(self.nodes) - 2):
                 alpha = self.alpha_st_gr
             else: 
                 alpha = self.alpha_st
 
-            p_transmit = 10 ** ((-alpha * self.link_lengths[i])/10)
+            p_transmit = 10 ** ((-alpha * self.nodes[i].link_length)/10)
             total_loss *= p_transmit
         
         return 1 - total_loss
     
 
     def print_network(self):
-        print("Quantum Network Topology:")
+        print("Network Topology:")
         for i, node in enumerate(self.nodes):
             print(f"{node.name}")
             if i < len(self.link_lengths):
                 print(f"  ↓ {self.link_lengths[i]} km")
         
-        # print(f"Distance between ground stations: {self.link_lengths[0] + self.link_lengths[-1]} km")
-        print(f"Estimated entanglement fidelity: {self.get_fidelity(k=0.1):.4e}")
-        print(f"Estimated photon loss: {self.get_photon_loss():.4e} photons/sec")
+        print(f"Estimated entanglement fidelity: {self.get_fidelity():.4e}")
+        print(f"Estimated photon loss: {self.get_photon_loss():.4e} dB")
