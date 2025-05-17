@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
     plt.figure(figsize=(8, 5))
     plt.plot(r2_neq, f2_neq, marker='o')
-    plt.title("Total Fidelity with 2 Satellite Repeaters (eq)")
+    plt.title("Total Fidelity with 2 Satellite Repeaters (neq)")
     plt.xlabel("Distance Between Repeaters (km)")
     plt.ylabel("Fidelity")
     plt.grid(True)
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     plt.figure(figsize=(8, 5))
     plt.plot(r2_neq, p2_neq, marker='o')
-    plt.title("Total Photon Loss with 2 Satellite Repeaters (eq)")
+    plt.title("Total Photon Loss with 2 Satellite Repeaters (neq)")
     plt.xlabel("Distance Between Repeaters (km)")
     plt.ylabel("Photon Loss (dB)")
     plt.grid(True)

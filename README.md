@@ -1,22 +1,23 @@
 # Simulating a Quantum Network with Satellite Repeaters
 
-## Plan
-- Create code class
-- Set variables for distances
-
-### Variables
-- LEO: < 2000km (where satellite should be); lowest satellite altitude is 167,4km
-- Num repeaters: 1-3 (?)
-- Distance between A and B: > 2000km (hard max for establishing quantum link)
-- China's satellite distance between repeater and ground station: 1200km
-
-### Considerations
-- Distance A to R and R to B: equidistent? would make sense to have the strongest link between all ground stations and satellite
-- Noise: weather, solar radiation
+## How to Run
+Run sim.py to simulate the network and generate plots on entanglement fidelity and photon loss. 
 
 
-### Values
-- Ground-ground: 0.18dB/km
-- best-case silica optical fibres: 0.095-0.13 dB/km (https://arxiv.org/pdf/1707.01339)
-- Satellite-ground (free-space): 30-50 at 500km, 0.014-0.023dB/km
-- Satellite-satellite: 0.001-0.002dB/km (hypothetical, very little noise); 0.07 free space in atmosphere
+## Network Architectures
+### 1. Single Satellite Repeater
+In this configuration, a satellite repeater was positioned equidistant between two ground stations. The total link length was varied, starting from 1200 km – comparable to the link length of the Micius satellite – and increased to 2000 km in segments of 200 km. At each step, fidelity and photon loss are calculated.
+
+![Alt text](figs/fig1.png)
+
+
+### 2. Two satellite repeaters with equal ground links
+Here, both ground stations were connected to their respective satellite nodes via links of equal length. The distance between the two satellite repeaters was then varied, ranging from 50 to 2000 km. Fidelity and photon loss were evaluated at intermediate distances of 50, 100, 500, 1000 and 2000 km.
+
+![Alt text](figs/fig2eq.png)
+
+
+### 3. Two satellite repeaters with unequal ground links
+To explore asymmetric configurations, I simulated a network in which the link between the second satellite repeater and its adjacent ground station was fixed at 2000 km, while the link from the first ground station to the first satellite remained at 1200 km. The distance between repeaters was again varied, following the same increments as in the previous setup.
+
+![Alt text](figs/fig2neq.png)
